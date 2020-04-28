@@ -46,7 +46,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const {
-      degree,
+      company,
       website,
       location,
       bio,
@@ -62,7 +62,7 @@ router.post(
 
     const profileFields = {
       user: req.user.id,
-      degree,
+      company,
       location,
       website: website === "" ? "" : normalize(website, { forceHttps: true }),
       bio,
@@ -82,6 +82,8 @@ router.post(
     profileFields.social = socialfields;
 
     try {
+      // Using upsert option (creates new doc if no match is found):
+
       let profile = await Profile.findOneAndUpdate(
         { user: req.user.id },
         { $set: profileFields },
@@ -175,7 +177,7 @@ router.put(
 
     const {
       title,
-      degree,
+      company,
       location,
       from,
       to,
@@ -184,7 +186,7 @@ router.put(
     } = req.body;
     const newExp = {
       title,
-      degree,
+      company,
       location,
       from,
       to,
