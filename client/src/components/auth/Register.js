@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import setAlert from "../../actionCreaters/setAlert";
+import register from "../../actionCreaters/setRegister";
 import PropTypes from "prop-types";
 
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, register }) => {
   const [formData, formDataSet] = useState({
     name: "",
     email: "",
@@ -22,7 +23,7 @@ const Register = ({ setAlert }) => {
     if (password !== password2) {
       setAlert("password not match", "danger");
     } else {
-      console.log("sucess");
+      register({ name, email, password });
     }
   };
   return (
@@ -37,7 +38,7 @@ const Register = ({ setAlert }) => {
             type="text"
             placeholder="Name"
             name="name"
-            required
+            //required
             value={name}
             onChange={handleOnChange}
           />
@@ -48,7 +49,7 @@ const Register = ({ setAlert }) => {
             placeholder="Email Address"
             name="email"
             value={email}
-            required
+            //required
             onChange={handleOnChange}
           />
           <small className="form-text">
@@ -60,7 +61,7 @@ const Register = ({ setAlert }) => {
           <input
             type="password"
             placeholder="password"
-            minLength="6"
+            //minLength="6"
             name="password"
             value={password}
             onChange={handleOnChange}
@@ -70,7 +71,7 @@ const Register = ({ setAlert }) => {
           <input
             type="password"
             placeholder="Confirm Password"
-            minLength="6"
+            //minLength="6"
             name="password2"
             value={password2}
             onChange={handleOnChange}
@@ -87,10 +88,11 @@ const Register = ({ setAlert }) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
 };
 
 // const mapDispatchToProps = (dispatch) => ({
 //   setAlert: (msg, alertType) => dispatch(setAlert(msg, alertType)),
 // });
 
-export default connect(null, { setAlert })(Register);
+export default connect(null, { setAlert, register })(Register);
