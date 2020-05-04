@@ -1,6 +1,9 @@
 import axios from "axios";
 import { REGISTER_SUCCESS, REGISTER_FAIL } from "../action/types";
 import setAlert from "./setAlert";
+import loadUser from "./loadUser";
+
+//Register user & Register fail
 
 export default ({ name, email, password }) => async (dispatch) => {
   const config = {
@@ -15,6 +18,7 @@ export default ({ name, email, password }) => async (dispatch) => {
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
     if (errors) {
