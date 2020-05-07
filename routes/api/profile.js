@@ -5,6 +5,7 @@ const { check, validationResult } = require("express-validator");
 const normalize = require("normalize-url");
 const axios = require("axios");
 const config = require("config");
+const checkObjectId = require("../../middleware/checkObjectId");
 
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
@@ -116,7 +117,7 @@ router.get("/", async (req, res) => {
 // @desc     Get profile by user id
 // @access   Public
 
-router.get("/user/:user_id", async (req, res) => {
+router.get("/user/:user_id", checkObjectId("user_id"), async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.params.user_id,
@@ -213,14 +214,6 @@ router.put(
 
 router.delete("/experience/:exp_id", auth, async (req, res) => {
   try {
-    // const profile = await Profile.findOne({ user: req.user.id });
-    // const removeIndex = profile.experience
-    //   .map((item) => item.id)
-    //   .indexOf(req.params.exp_id);
-
-    // profile.experience.splice(removeIndex, 1);
-    // await profile.save();
-    // res.json(profile);
     const foundProfile = await Profile.findOne({ user: req.user.id });
 
     foundProfile.experience = foundProfile.experience.filter(
@@ -295,14 +288,6 @@ router.put(
 
 router.delete("/education/:edu_id", auth, async (req, res) => {
   try {
-    // const profile = await Profile.findOne({ user: req.user.id });
-    // const removeIndex = profile.education
-    //   .map((item) => item.id)
-    //   .indexOf(req.params.edu_id);
-
-    // profile.education.splice(removeIndex, 1);
-    // await profile.save();
-    // res.json(profile);
     const foundProfile = await Profile.findOne({ user: req.user.id });
     foundProfile.education = foundProfile.education.filter(
       (edu) => edu._id.toString() !== req.params.edu_id

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
+const checkObjectId = require("../../middleware/checkObjectId");
 
 const User = require("../../models/User");
 const Post = require("../../models/Post");
@@ -57,14 +58,9 @@ router.get("/", auth, async (req, res) => {
 //desc   GET post by id
 //@access Private
 
-router.get("/:id", auth, async (req, res) => {
+router.get("/:id", [auth, checkObjectId("id")], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-
-    // Check for ObjectId format and post
-    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !post) {
-      return res.status(404).json({ msg: "Post not found" });
-    }
 
     res.json(post);
   } catch (error) {
@@ -77,14 +73,9 @@ router.get("/:id", auth, async (req, res) => {
 // @route    DELETE api/posts/:id
 // @desc     Delete a post
 // @access   Private
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", [auth, checkObjectId("id")], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-
-    // Check for ObjectId format and post
-    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !post) {
-      return res.status(404).json({ msg: "Post not found" });
-    }
 
     // Check user
     if (post.user.toString() !== req.user.id) {
@@ -105,7 +96,7 @@ router.delete("/:id", auth, async (req, res) => {
 // @desc     Like a post
 // @access   Private
 
-router.put("/like/:id", auth, async (req, res) => {
+router.put("/like/:id", [auth, checkObjectId("id")], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -129,7 +120,7 @@ router.put("/like/:id", auth, async (req, res) => {
 // @desc     unLike a post
 // @access   Private
 
-router.put("/unlike/:id", auth, async (req, res) => {
+router.put("/unlike/:id", [auth, checkObjectId("id")], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -157,7 +148,11 @@ router.put("/unlike/:id", auth, async (req, res) => {
 // @access   Private
 router.post(
   "/comment/:id",
-  [auth, [check("text", "Text is required").not().isEmpty()]],
+  [
+    auth,
+    checkObjectId("id"),
+    [check("text", "Text is required").not().isEmpty()],
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
