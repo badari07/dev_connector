@@ -42,7 +42,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             type="text"
             placeholder="Name"
             name="name"
-            //required
+            required
             value={name}
             onChange={handleOnChange}
           />
@@ -53,7 +53,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             placeholder="Email Address"
             name="email"
             value={email}
-            //required
+            required
             onChange={handleOnChange}
           />
           <small className="form-text">
@@ -65,7 +65,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
           <input
             type="password"
             placeholder="password"
-            //minLength="6"
+            minLength="6"
             name="password"
             value={password}
             onChange={handleOnChange}
@@ -75,7 +75,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
           <input
             type="password"
             placeholder="Confirm Password"
-            //minLength="6"
+            minLength="6"
             name="password2"
             value={password2}
             onChange={handleOnChange}
