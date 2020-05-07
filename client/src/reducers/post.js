@@ -4,6 +4,7 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  GET_POST,
 } from "../action/types";
 
 const intialState = {
@@ -23,6 +24,12 @@ export default (state = intialState, action) => {
         posts: payload,
         loading: false,
       };
+    case GET_POST:
+      return {
+        ...state,
+        post: payload,
+        loading: false,
+      };
     case ADD_POST:
       return {
         ...state,
@@ -38,7 +45,7 @@ export default (state = intialState, action) => {
     case POST_ERROR:
       return {
         ...state,
-        posts: payload,
+        error: payload,
         loading: false,
       };
     case UPDATE_LIKES:

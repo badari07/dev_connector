@@ -6,7 +6,7 @@ const auth = require("../../middleware/auth");
 const User = require("../../models/User");
 const Post = require("../../models/Post");
 
-//@route POST /api/post
+//@route POST /api/posts
 //desc  Create post
 //@access Private
 
@@ -39,7 +39,7 @@ router.post(
   }
 );
 
-//@route GET /api/post
+//@route GET /api/posts
 //desc  get all post
 //@access Private
 
@@ -53,7 +53,7 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-//@route GET /api/post/:id
+//@route GET /api/posts/:id
 //desc   GET post by id
 //@access Private
 
